@@ -4,7 +4,7 @@ import br.com.equihire.model.enums.NivelCarreira;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -18,12 +18,12 @@ public class Vaga {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O Título da vaga é obrigatório.")
+    @NotNull(message = "O Título da vaga é obrigatório.")
     @Size(max = 120, message = "O título deve ter no máximo 120 caracteres.")
     @Column(nullable = false, unique = true, length = 120)
     private String titulo;
 
-    @NotBlank(message = "A descrição da vaga é obrigatória.")
+    @NotNull(message = "A descrição da vaga é obrigatória.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
@@ -32,12 +32,12 @@ public class Vaga {
     @Column(name = "carga_horaria_semanal", nullable = false)
     private Integer cargaHorariaSemanal;
 
-    @NotBlank(message = "O Nível de Carreira é obrigatório.")
+    @NotNull(message = "O Nível de Carreira é obrigatório.")
     @Column(name = "nivel_carreira", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private NivelCarreira nivel;
 
-    @NotBlank(message = "A área de atuação é obrigatória.")
+    @NotNull(message = "A área de atuação é obrigatória.")
     @Size(max = 100, message = "A área de atuação deve ter no máximo 100 caracteres.")
     @Column(name = "area_atuacao", length = 100)
     private String areaAtuacao;

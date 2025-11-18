@@ -22,20 +22,20 @@
                           method="post" th:object="${vaga}" novalidate>
 
                         <div class="mb-3">
-                            <label class="form-label">Título da Vaga</label>
-                            <input type="text" th:field="*{titulo}" class="form-control" placeholder="Ex.: Especialista em Ética de IA">
+                            <label class="form-label">Título da Vaga *</label>
+                            <input type="text" th:field="*{titulo}" class="form-control" placeholder="Ex.: Especialista em Ética de IA" required>
                             <div class="text-danger small" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}">Erro</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Descrição</label>
-                            <textarea th:field="*{descricao}" class="form-control" rows="3" placeholder="Detalhes sobre a função e requisitos..."></textarea>
+                            <label class="form-label">Descrição *</label>
+                            <textarea th:field="*{descricao}" class="form-control" rows="3" placeholder="Detalhes sobre a função e requisitos..." required></textarea>
                             <div class="text-danger small" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">Erro</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Nível de Carreira</label>
-                            <select th:field="*{nivel}" class="form-select">
+                            <label class="form-label">Nível de Carreira *</label>
+                            <select th:field="*{nivel}" class="form-select" required>
                                 <option value="">Selecione o Nível</option>
                                 <option th:each="nivel : ${T(br.com.equihire.model.enums.NivelCarreira).values()}"
                                         th:value="${nivel}" th:text="${nivel}"></option>
@@ -44,14 +44,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Área de Atuação</label>
-                            <input type="text" th:field="*{areaAtuacao}" class="form-control" placeholder="Ex.: TI, ESG, Data Science">
+                            <label class="form-label">Área de Atuação *</label>
+                            <input type="text" th:field="*{areaAtuacao}" class="form-control" placeholder="Ex.: TI, ESG, Data Science" required>
                             <div class="text-danger small" th:if="${#fields.hasErrors('areaAtuacao')}" th:errors="*{areaAtuacao}">Erro</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Carga Horária Semanal (horas)</label>
-                            <input type="number" th:field="*{cargaHorariaSemanal}" class="form-control" placeholder="Ex.: 40">
+                            <label class="form-label">Carga Horária Semanal (horas) *</label>
+                            <input type="number" th:field="*{cargaHorariaSemanal}" class="form-control" placeholder="Ex.: 40" required>
                             <div class="text-danger small" th:if="${#fields.hasErrors('cargaHorariaSemanal')}" th:errors="*{cargaHorariaSemanal}">Erro</div>
                         </div>
 

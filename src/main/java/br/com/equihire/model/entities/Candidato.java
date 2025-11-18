@@ -1,4 +1,4 @@
-package br.com.equihire.model;
+package br.com.equihire.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

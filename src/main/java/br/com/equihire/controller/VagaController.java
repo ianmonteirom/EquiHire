@@ -5,9 +5,12 @@ import br.com.equihire.exception.VagaNaoEncontradaException;
 import br.com.equihire.model.entities.Vaga;
 import br.com.equihire.service.VagaService;
 import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,6 +22,13 @@ public class VagaController {
 
     public VagaController(VagaService service) {
         this.service = service;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Integer.class, "cargaHorariaSemanal", new CustomNumberEditor(Integer.class, true));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        binder.setDisallowedFields("id", "criadoEm", "atualizadoEm");
     }
 
     @GetMapping
