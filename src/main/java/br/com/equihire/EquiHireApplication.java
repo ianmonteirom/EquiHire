@@ -10,11 +10,11 @@ public class EquiHireApplication {
 
       System.out.println("\n========================================");
       System.out.println("✅ Aplicação iniciada com sucesso!");
-      System.out.println("App:          http://localhost:8080/EquiHire");
+      System.out.println("App:          http://localhost:8080/equihire");
       System.out.println("H2 Console:   http://localhost:8080/h2-console");
-      System.out.println("JDBC URL:     jdbc:h2:mem:equipdb");
-      System.out.println("Usuário:      teste");
-      System.out.println("Senha:        1234");
+      System.out.println("JDBC URL:     jdbc:h2:mem:equihire");
+      System.out.println("Usuário:      ian");
+      System.out.println("Senha:        123255");
       System.out.println("========================================\n");
   }
 }

@@ -1,4 +1,4 @@
-package br.com.equihire.model.entities;
+package br.com.equihire.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -27,8 +27,9 @@ public class Candidato {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @NotBlank(message = "A Área de Atuação é obrigatória.") // <--- ALTERAÇÃO PRINCIPAL AQUI
     @Size(max = 100, message = "A área de atuação deve ter no máximo 100 caracteres.")
-    @Column(name = "area_atuacao", length = 100)
+    @Column(name = "area_atuacao", length = 100, nullable = false) // Definir como não nulo no banco
     private String areaAtuacao;
 
     @Column(name = "nivel_carreira", length = 50)
