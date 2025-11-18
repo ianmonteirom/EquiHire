@@ -2,8 +2,8 @@ package br.com.equihire.service;
 
 import br.com.equihire.exception.CandidatoNaoEncontradoException;
 import br.com.equihire.exception.EmailDuplicadoException;
-import br.com.equihire.model.Candidato;
-import br.com.equihire.repository.CandidatoRepository;
+import br.com.equihire.model.entities.Candidato;
+import br.com.equihire.model.repositories.CandidatoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

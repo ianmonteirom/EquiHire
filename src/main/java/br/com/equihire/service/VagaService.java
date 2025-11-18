@@ -2,8 +2,8 @@ package br.com.equihire.service;
 
 import br.com.equihire.exception.TituloDuplicadoException;
 import br.com.equihire.exception.VagaNaoEncontradaException;
-import br.com.equihire.model.Vaga;
-import br.com.equihire.repository.VagaRepository;
+import br.com.equihire.model.entities.Vaga;
+import br.com.equihire.model.repositories.VagaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

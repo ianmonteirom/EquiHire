@@ -1,14 +1,17 @@
 package br.com.equihire.controller;
 
+import br.com.equihire.exception.CandidatoNaoEncontradoException;
+import br.com.equihire.exception.EmailDuplicadoException;
 import br.com.equihire.model.entities.Candidato;
 import br.com.equihire.service.CandidatoService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/candidatos")
 public class CandidatoController {
 
@@ -19,29 +22,82 @@ public class CandidatoController {
     }
 
     @GetMapping
-    public List<Candidato> listar() {
-        return service.listarTodos();
+    public String listar(Model model) {
+        model.addAttribute("lista", service.listarTodos());
+        return "candidatos/lista";
     }
 
-    @GetMapping("/{id}")
-    public Candidato buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    @GetMapping("/novo")
+    public String novoForm(Model model) {
+        model.addAttribute("candidato", new Candidato());
+        return "candidatos/form";
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Candidato criar(@Valid @RequestBody Candidato candidato) {
-        return service.criar(candidato);
+    public String criar(@Valid @ModelAttribute("candidato") Candidato candidato,
+                        BindingResult br, RedirectAttributes ra) {
+        if (br.hasErrors()) return "candidatos/form";
+
+        try {
+            service.criar(candidato);
+            ra.addFlashAttribute("msg_sucesso", "Candidato criado com sucesso!");
+        } catch (EmailDuplicadoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/candidatos/novo";
+        }
+
+        return "redirect:/candidatos";
     }
 
-    @PutMapping("/{id}")
-    public Candidato atualizar(@PathVariable Long id, @Valid @RequestBody Candidato dados) {
-        return service.atualizar(id, dados);
+    @GetMapping("/{id}/editar")
+    public String editarForm(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            Candidato candidato = service.buscarPorId(id);
+            model.addAttribute("candidato", candidato);
+            return "candidatos/form";
+        } catch (CandidatoNaoEncontradoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/candidatos";
+        }
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable Long id,
+                            @Valid @ModelAttribute("candidato") Candidato dados,
+                            BindingResult br, RedirectAttributes ra, Model model) {
+        if (br.hasErrors()) return "candidatos/form";
+
+        try {
+            service.atualizar(id, dados);
+            ra.addFlashAttribute("msg_sucesso", "Candidato atualizado com sucesso!");
+        } catch (CandidatoNaoEncontradoException | EmailDuplicadoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/candidatos";
+        }
+
+        return "redirect:/candidatos";
+    }
+
+    @PostMapping("/{id}/excluir")
+    public String excluir(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            service.excluir(id);
+            ra.addFlashAttribute("msg_sucesso", "Candidato excluído.");
+        } catch (CandidatoNaoEncontradoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+        }
+        return "redirect:/candidatos";
+    }
+
+    @GetMapping("/{id}")
+    public String detalhes(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            Candidato c = service.buscarPorId(id);
+            model.addAttribute("candidato", c);
+            return "candidatos/detalhes";
+        } catch (CandidatoNaoEncontradoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/candidatos";
+        }
     }
 }

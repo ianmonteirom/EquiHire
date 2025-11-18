@@ -1,14 +1,17 @@
 package br.com.equihire.controller;
 
+import br.com.equihire.exception.TituloDuplicadoException;
+import br.com.equihire.exception.VagaNaoEncontradaException;
 import br.com.equihire.model.entities.Vaga;
 import br.com.equihire.service.VagaService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/vagas")
 public class VagaController {
 
@@ -19,29 +22,82 @@ public class VagaController {
     }
 
     @GetMapping
-    public List<Vaga> listar() {
-        return service.listarTodos();
+    public String listar(Model model) {
+        model.addAttribute("lista", service.listarTodos());
+        return "vagas/lista";
     }
 
-    @GetMapping("/{id}")
-    public Vaga buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    @GetMapping("/novo")
+    public String novoForm(Model model) {
+        model.addAttribute("vaga", new Vaga());
+        return "vagas/form";
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Vaga criar(@Valid @RequestBody Vaga vaga) {
-        return service.criar(vaga);
+    public String criar(@Valid @ModelAttribute("vaga") Vaga vaga,
+                        BindingResult br, RedirectAttributes ra) {
+        if (br.hasErrors()) return "vagas/form";
+
+        try {
+            service.criar(vaga);
+            ra.addFlashAttribute("msg_sucesso", "Vaga criada com sucesso!");
+        } catch (TituloDuplicadoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/vagas/novo";
+        }
+
+        return "redirect:/vagas";
     }
 
-    @PutMapping("/{id}")
-    public Vaga atualizar(@PathVariable Long id, @Valid @RequestBody Vaga dados) {
-        return service.atualizar(id, dados);
+    @GetMapping("/{id}/editar")
+    public String editarForm(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            Vaga vaga = service.buscarPorId(id);
+            model.addAttribute("vaga", vaga);
+            return "vagas/form";
+        } catch (VagaNaoEncontradaException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/vagas";
+        }
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable Long id,
+                            @Valid @ModelAttribute("vaga") Vaga dados,
+                            BindingResult br, RedirectAttributes ra, Model model) {
+        if (br.hasErrors()) return "vagas/form";
+
+        try {
+            service.atualizar(id, dados);
+            ra.addFlashAttribute("msg_sucesso", "Vaga atualizada com sucesso!");
+        } catch (VagaNaoEncontradaException | TituloDuplicadoException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/vagas";
+        }
+
+        return "redirect:/vagas";
+    }
+
+    @PostMapping("/{id}/excluir")
+    public String excluir(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            service.excluir(id);
+            ra.addFlashAttribute("msg_sucesso", "Vaga excluída.");
+        } catch (VagaNaoEncontradaException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+        }
+        return "redirect:/vagas";
+    }
+
+    @GetMapping("/{id}")
+    public String detalhes(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            Vaga v = service.buscarPorId(id);
+            model.addAttribute("vaga", v);
+            return "vagas/detalhes";
+        } catch (VagaNaoEncontradaException e) {
+            ra.addFlashAttribute("msg_erro", e.getMessage());
+            return "redirect:/vagas";
+        }
     }
 }

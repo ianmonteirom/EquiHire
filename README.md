@@ -1,34 +1,31 @@
-# Equipamentos — MVC CRUD (Thymeleaf + H2)
+# 🤖 EquiHire — API RESTful de Recrutamento Inclusivo (Global Solution 2025)
 
-## Requisitos
-- Java 17+
-- Maven 3.9+
+## 💡 Contexto e Objetivo
+A **EquiHire** é uma API RESTful desenvolvida para a Global Solution 2025, com foco no **Futuro do Trabalho** e **Recrutamento Inclusivo**. A plataforma visa conectar profissionais que buscam **upskilling/reskilling** às vagas futuras (2030+) através de um sistema baseado em competências.
 
-## Como rodar
+A solução segue a arquitetura em camadas (**Controller → Service → Repository**) e implementa dois CRUDs completos, além de tratamento de exceções robusto.
+
+### 🌍 Conexão com ODS
+O projeto atende aos Objetivos de Desenvolvimento Sustentável (ODS) da ONU:
+* **ODS 4 (Educação de Qualidade):** Foco em upskilling e reskilling para o futuro.
+* **ODS 8 (Trabalho Decente e Crescimento Econômico):** Promoção de um mercado de trabalho mais justo e preparado para as mudanças tecnológicas.
+* **ODS 10 (Redução das Desigualdades):** Prioridade em processos de seleção mais inclusivos.
+
+---
+
+## ⚙️ Requisitos Técnicos
+* **Java:** Versão 17+
+* **Spring Boot:** 3.2.x (ou superior)
+* **Maven:** 3.9+
+* **Banco de Dados:** H2 (em memória/arquivo, utilizado para desenvolvimento).
+
+---
+
+## ▶️ Como Rodar (API RESTful)
+
+1.  **Clone o projeto** e navegue até a pasta raiz.
+2.  **Execute a aplicação** usando o Spring Boot:
+
 ```bash
+mvn clean install
 mvn spring-boot:run
-# ou
-mvn -DskipTests clean package
-java -jar target/equipamentos-mvc-crud-1.0.0.jar
-```
-
-Acesse:
-- App: http://localhost:8080/equipamentos
-- H2 Console: http://localhost:8080/h2-console  
-  JDBC URL: `jdbc:h2:file:./data/equipdb` | user: `teste` | 1234
-
-## Estrutura
-- `br.com.exemplo.equipamentos.controller`
-  - `HomeController` (redirect para `/equipamentos`)
-  - `EquipamentoController` (CRUD completo)
-- `br.com.exemplo.equipamentos.model`
-  - `Equipamento` (entidade JPA, validação)
-  - `EquipamentoRepository` (Spring Data JPA)
-- `resources/templates`
-  - `layout.html` (navbar + container)
-  - `fragments/_messages.html` (alerts)
-  - `equipamentos/lista.html`, `form.html`, `detalhes.html`
-- `resources/static`
-  - `css/style.css`, `js/app.js`
-
-Direitos Reservados - Prof. Salatiel Luz Marinho - FIAP
