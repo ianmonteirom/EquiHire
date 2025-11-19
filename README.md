@@ -98,5 +98,5 @@ A API expõe dois recursos principais: `/candidatos` e `/vagas`.
 }
 ```
 
-## 📺 Vídeo de Apresentação do projeto rodando´
+## 📺 Vídeo de Apresentação do projeto rodando
 https://youtu.be/tsHbI-BPvWo
