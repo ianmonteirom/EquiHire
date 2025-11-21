@@ -1,5 +1,10 @@
 # 🤖 EquiHire — API RESTful de Recrutamento Inclusivo (Global Solution 2025)
 
+## Desenvolvido por:
+- Fabrício Carlos - RM555017
+- Ian Monteiro Moreira - RM558652
+- João Hoffmann - RM550763
+
 ## 💡 Contexto e Objetivo
 A **EquiHire** é uma API RESTful desenvolvida para a Global Solution 2025, com foco no **Futuro do Trabalho** e **Recrutamento Inclusivo**. A plataforma visa conectar profissionais que buscam **upskilling/reskilling** às vagas futuras (que funcionam como "trilhas de competências") através de um sistema baseado em dados.
 
